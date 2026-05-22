@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { DayTimeRangeEditor } from '../components/DayTimeRangeEditor';
@@ -44,30 +45,34 @@ export function TemplateSetupPage() {
 
   // Load existing template on mount
   useEffect(() => {
-    availabilityApi.getTemplate().then((res) => {
-      const items = res.data;
-      if (items.length === 0) return;
-      const newEnabled = { ...enabledDays };
-      const newRanges = { ...dayRanges };
-      // Group items by day
-      const byDay = items.reduce(
-        (acc, item) => {
-          const day = item.dayOfWeek as DayName;
-          if (!acc[day]) acc[day] = [];
-          acc[day].push({ start: item.start, end: item.end });
-          return acc;
-        },
-        {} as Record<DayName, TimeRangeDto[]>
-      );
-      for (const day of DAYS_OF_WEEK) {
-        if (byDay[day] && byDay[day].length > 0) {
-          newEnabled[day] = true;
-          newRanges[day] = byDay[day];
+    availabilityApi.getTemplate()
+      .then((res) => {
+        const items = res.data;
+        if (items.length === 0) return;
+        const newEnabled = { ...enabledDays };
+        const newRanges = { ...dayRanges };
+        // Group items by day
+        const byDay = items.reduce(
+          (acc, item) => {
+            const day = item.dayOfWeek as DayName;
+            if (!acc[day]) acc[day] = [];
+            acc[day].push({ start: item.start, end: item.end });
+            return acc;
+          },
+          {} as Record<DayName, TimeRangeDto[]>
+        );
+        for (const day of DAYS_OF_WEEK) {
+          if (byDay[day] && byDay[day].length > 0) {
+            newEnabled[day] = true;
+            newRanges[day] = byDay[day];
+          }
         }
-      }
-      setEnabledDays(newEnabled);
-      setDayRanges(newRanges);
-    });
+        setEnabledDays(newEnabled);
+        setDayRanges(newRanges);
+      })
+      .catch(() => {
+        toast.error('Failed to load your template. Saving now will overwrite your existing availability.');
+      });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleToggleDay = (day: DayName) => {

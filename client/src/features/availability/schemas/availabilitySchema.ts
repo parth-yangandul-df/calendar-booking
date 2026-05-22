@@ -40,5 +40,6 @@ export const upsertTemplateSchema = z.object({
 
 export const upsertOverrideSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  items: z.array(timeRangeItemSchema).min(1, 'At least one time range required'),
+  // Empty array = clear all overrides for this day (valid — backend full-replace semantics)
+  items: z.array(timeRangeItemSchema),
 });

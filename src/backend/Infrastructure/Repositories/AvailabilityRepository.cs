@@ -84,8 +84,12 @@ public class AvailabilityRepository : IAvailabilityRepository
     public async Task<List<CalendarDayDto>> GetCalendarAsync(string userId, string month)
     {
         var parts = month.Split('-');
-        var year = int.Parse(parts[0]);
-        var monthNum = int.Parse(parts[1]);
+        if (parts.Length != 2 ||
+            !int.TryParse(parts[0], out var year) ||
+            !int.TryParse(parts[1], out var monthNum) ||
+            monthNum < 1 || monthNum > 12)
+            return new List<CalendarDayDto>();
+
         var startDate = new DateOnly(year, monthNum, 1);
         var endDate = startDate.AddMonths(1).AddDays(-1);
 

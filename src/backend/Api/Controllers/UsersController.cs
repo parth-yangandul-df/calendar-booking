@@ -23,10 +23,11 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> SearchUsers([FromQuery] string? search)
     {
-        IQueryable<ApplicationUser> query = _userManager.Users;
+        if (string.IsNullOrWhiteSpace(search))
+            return BadRequest(new ProblemDetails { Title = "search query is required" });
 
-        if (!string.IsNullOrWhiteSpace(search))
-            query = query.Where(u => u.Email!.Contains(search));
+        IQueryable<ApplicationUser> query = _userManager.Users;
+        query = query.Where(u => u.Email!.Contains(search));
 
         var users = await query.Take(20).ToListAsync();
         var result = users.Select(u => new UserDto(u.Id, u.Email!));

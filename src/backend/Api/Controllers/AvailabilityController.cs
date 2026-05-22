@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using CalendarBooking.Application.Availability.DTOs;
 using CalendarBooking.Application.Common.Interfaces;
 using Domain.Entities;
@@ -64,7 +65,11 @@ public class AvailabilityController : ControllerBase
     public async Task<IActionResult> GetOverrides([FromQuery] string from, [FromQuery] string to)
     {
         var userId = GetUserId();
-        var overrides = await _repo.GetOverridesAsync(userId, DateOnly.Parse(from), DateOnly.Parse(to));
+        if (!DateOnly.TryParseExact(from, "yyyy-MM-dd", out var fromDate))
+            return BadRequest(new ProblemDetails { Title = "from must be in yyyy-MM-dd format" });
+        if (!DateOnly.TryParseExact(to, "yyyy-MM-dd", out var toDate))
+            return BadRequest(new ProblemDetails { Title = "to must be in yyyy-MM-dd format" });
+        var overrides = await _repo.GetOverridesAsync(userId, fromDate, toDate);
         var result = overrides.Select(ao => new AvailabilityOverrideDto(
             ao.Date.ToString("yyyy-MM-dd"),
             ao.StartTime.ToString("HH:mm"),
@@ -83,7 +88,9 @@ public class AvailabilityController : ControllerBase
             throw new ValidationException(validation.Errors);
 
         var userId = GetUserId();
-        await _repo.SetOverrideAsync(userId, DateOnly.Parse(request.Date), request.Items);
+        if (!DateOnly.TryParseExact(request.Date, "yyyy-MM-dd", out var overrideDate))
+            return BadRequest(new ProblemDetails { Title = "date must be in yyyy-MM-dd format" });
+        await _repo.SetOverrideAsync(userId, overrideDate, request.Items);
         return Ok();
     }
 
@@ -92,7 +99,9 @@ public class AvailabilityController : ControllerBase
     public async Task<IActionResult> DeleteOverride([FromQuery] string date, [FromQuery] Guid overrideId)
     {
         var userId = GetUserId();
-        await _repo.DeleteOverrideAsync(userId, DateOnly.Parse(date), overrideId);
+        if (!DateOnly.TryParseExact(date, "yyyy-MM-dd", out var deleteDate))
+            return BadRequest(new ProblemDetails { Title = "date must be in yyyy-MM-dd format" });
+        await _repo.DeleteOverrideAsync(userId, deleteDate, overrideId);
         return Ok();
     }
 
@@ -101,6 +110,19 @@ public class AvailabilityController : ControllerBase
     [HttpGet("calendar")]
     public async Task<IActionResult> GetCalendar([FromQuery] string month, [FromQuery] string? userId = null)
     {
+        // CR-01: Validate month format before it reaches the repository
+        if (string.IsNullOrWhiteSpace(month) ||
+            !Regex.IsMatch(month, @"^\d{4}-\d{2}$"))
+            return BadRequest(new ProblemDetails { Title = "month must be in YYYY-MM format" });
+
+        // CR-02: Validate userId exists when provided
+        if (!string.IsNullOrWhiteSpace(userId))
+        {
+            var targetUser = await _userManager.FindByIdAsync(userId);
+            if (targetUser == null)
+                return NotFound(new ProblemDetails { Title = "User not found", Status = 404 });
+        }
+
         var targetUserId = string.IsNullOrWhiteSpace(userId) ? GetUserId() : userId;
         var calendar = await _repo.GetCalendarAsync(targetUserId, month);
         return Ok(calendar);
