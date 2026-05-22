@@ -28,8 +28,13 @@
 2. User stays logged in across browser refreshes (JWT with refresh token persistence)
 3. User can log out from any page, ending their authenticated session
 4. Admin user exists with seeded credentials on first application startup
-**Plans:** TBD
+**Plans:** 3 plans
 **UI hint:** yes
+
+Plans:
+- [ ] 01-01-PLAN.md — Project scaffold & infrastructure (Docker, backend solution, frontend Vite + shadcn/ui)
+- [ ] 01-02-PLAN.md — Auth backend (register, login, refresh, logout API + admin seed + EF migration)
+- [ ] 01-03-PLAN.md — Auth frontend (login/register pages, AuthContext, session restore, protected routes)
 
 ### Phase 2: Availability Management
 **Goal:** Users can define their monthly availability schedule and view other users' available time slots.
@@ -77,7 +82,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Authentication | 0/0 | Not started | - |
+| 1. Foundation & Authentication | 0/3 | Not started | - |
 | 2. Availability Management | 0/0 | Not started | - |
 | 3. Booking Engine | 0/0 | Not started | - |
 | 4. Admin Dashboard | 0/0 | Not started | - |
