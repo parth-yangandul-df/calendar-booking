@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-05-22T10:18:29.413Z"
+status: executing
+last_updated: "2026-05-22T12:03:00.000Z"
 progress:
   total_phases: 4
-  completed_phases: 0
-  total_plans: 3
-  completed_plans: 2
-  percent: 0
+  completed_phases: 1
+  total_plans: 5
+  completed_plans: 4
+  percent: 50
 ---
 
 # Calendar Booking System — State
@@ -20,25 +20,29 @@ progress:
 |-------|-------|
 | **Milestone** | v1.0 |
 | **Core Value** | Users can reliably book time with each other through shared calendar availability, with automatic Google Meet links and email confirmations |
-| **Current Focus** | Roadmap creation — awaiting approval |
+| **Current Focus** | Phase 2 Plan 01 complete — ready for Phase 2 Plan 02 (frontend) |
 
 ## Current Position
 
-Phase: 01 (Foundation & Authentication) — EXECUTING
-Plan: 2 of 3
+Phase: 02 (availability-management) — EXECUTING
+Plan: 2 of 2
 | Phase | Plan | Status |
 |-------|------|--------|
-| — | Roadmap | Awaiting approval |
-| — | Phase 1 | Not started |
+| 1 | Foundation & Authentication | ✅ Complete |
+| 2 Plan 01 | Availability Backend | ✅ Complete |
+| 2 Plan 02 | Availability Frontend | 📋 Ready |
 
 ```
-Progress: [███████░░░] 67%
-           █░░░░░░░░░  0%
+Progress: [████████████] 100%
+           ████████████░░░░  62%
 ```
 
 ## Performance Metrics
 
-*No metrics recorded yet — first session.*
+| Phase | Plan | Duration | Tasks | Files |
+|-------|------|----------|-------|-------|
+| Phase 01 | P03 | 12 min | 3 | 14 |
+| Phase 02 | P01 | 18 min | 3 | 20 |
 
 ## Accumulated Context
 
@@ -51,23 +55,27 @@ Progress: [███████░░░] 67%
 | 3 | Admin Dashboard depends on Phase 3 | Admin needs booking data, which doesn't exist until Phase 3 completes |
 | 4 | Seed admin (ADMIN-01) in Phase 1 | Admin user must exist from startup; auth infrastructure needed anyway |
 | 5 | MVP mode for all phases | Each phase delivers an end-to-end user capability, not horizontal layers |
-| Phase 01 P03 | 12 min | 3 tasks | 14 files |
+| 6 | Single GET /calendar endpoint with optional userId param | ASP.NET Core cannot have two GET actions with identical route templates; optional param cleanly handles both own and others' calendar |
+| 7 | Full-replace semantics for template and override writes | Prevents delta-sync race conditions (Pitfall 2 from RESEARCH.md); idempotent design |
+| 8 | UserDto exposes only Id + Email | T-02-03: no IsAdmin, no CreatedAt, no PII beyond email in user search results |
 
 - [Phase ?]: Used failed request queue pattern to prevent race condition from multiple simultaneous 401s
 - [Phase ?]: Session restore uses httpOnly cookies (no localStorage) preventing XSS token theft (D-04)
-- [Phase ?]: Flag persists across route changes within same page lifetime, avoiding redundant POST /auth/refresh calls on every navigation (T-03-01 mitigation)
-- [Phase ?]: Replace instead of push to prevent /login URL remaining in browser history after successful auth (T-03-03 mitigation)
+- [Phase 02-01]: GetUserId() returns string! — [Authorize] guarantees auth, null dereference cannot occur at runtime
 
 ### Active Tasks
 
-- [ ] Approve ROADMAP.md
-- [ ] Begin Phase 1 planning after approval
+- [x] Phase 1 complete — auth system (signup/login/logout/refresh), admin seed, project scaffold
+- [x] Phase 2 context gathered (14 decisions locked)
+- [x] Phase 2 researched and planned (2 plans, 2 waves)
+- [x] Phase 2 Plan 01 complete — availability backend (entities, migration, repo, controllers)
+- [ ] Phase 2 Plan 02 — availability frontend (month grid, side panel, template setup, user directory)
 
 ### Open Questions
 
-- Google Calendar API credentials / OAuth setup details (deferred to Phase 1 planning)
+- Google Calendar API credentials / OAuth setup details (deferred to Phase 3 planning)
 - SMTP/email service provider choice (deferred to Phase 3 planning)
-- FullCalendar React component configuration specifics (deferred to Phase 2 planning)
+- Database: Local SQL Server (MSSQLSERVER, SQL Server 2017) with SQL Server Auth
 
 ### Blockers
 
@@ -78,6 +86,9 @@ Progress: [███████░░░] 67%
 | Session | Date | Work Done | Outcome |
 |---------|------|-----------|---------|
 | 1 | 2026-05-22 | Created ROADMAP.md, STATE.md, updated REQUIREMENTS.md traceability | Awaiting approval |
+| 2 | 2026-05-22 | Executed Phase 1 (3 plans): project scaffold, auth backend, auth frontend | Completed |
+| 3 | 2026-05-22 | Discussed, researched, and planned Phase 2 (Availability Management) — 2 plans | Planned |
+| 4 | 2026-05-22 | Executed Phase 2 Plan 01 — availability backend (entities, migration, repo, 2 controllers) | Completed |
 
 ---
 

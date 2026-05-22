@@ -62,8 +62,8 @@
 | AUTH-01 | Phase 1 | Complete |
 | AUTH-02 | Phase 1 | Complete |
 | AUTH-03 | Phase 1 | Complete |
-| CAL-01 | Phase 2 | Pending |
-| CAL-02 | Phase 2 | Pending |
+| CAL-01 | Phase 2 | In Progress (backend complete) |
+| CAL-02 | Phase 2 | In Progress (backend complete) |
 | CAL-03 | Phase 3 | Pending |
 | BOOK-01 | Phase 3 | Pending |
 | BOOK-02 | Phase 3 | Pending |

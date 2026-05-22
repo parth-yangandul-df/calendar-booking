@@ -45,11 +45,11 @@ Plans:
 1. User can navigate to a monthly calendar view and mark individual time slots as available/unavailable
 2. Availability changes save immediately and persist across sessions
 3. User can view another user's profile page and see their defined available slots for the current month
-**Plans:** 2 plans
+**Plans:** 2/2 plans created
 **UI hint:** yes
 
 Plans:
-- [ ] 02-01-PLAN.md — Backend: entities, DbContext, migration, repository, controllers, user search, service registration
+- [x] 02-01-PLAN.md — Backend: entities, DbContext, migration, repository, controllers, user search, service registration
 - [ ] 02-02-PLAN.md — Frontend: month grid, side panel, template setup, user directory, routing, Navbar
 
 ### Phase 3: Booking Engine
@@ -87,6 +87,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Authentication | 3/3 | ✅ Complete | 2026-05-22 |
-| 2. Availability Management | 0/2 | Planning | - |
+| 2. Availability Management | 2/2 | Planned | - |
 | 3. Booking Engine | 0/0 | Not started | - |
 | 4. Admin Dashboard | 0/0 | Not started | - |
