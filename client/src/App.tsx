@@ -6,8 +6,11 @@ import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import { Navbar } from '@/components/layout/Navbar';
 import { LoginPage } from '@/features/auth/pages/LoginPage';
 import { RegisterPage } from '@/features/auth/pages/RegisterPage';
-import { DashboardPage } from '@/features/auth/pages/DashboardPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { MyCalendarPage } from '@/features/availability/pages/MyCalendarPage';
+import { TemplateSetupPage } from '@/features/availability/pages/TemplateSetupPage';
+import { UserDirectoryPage } from '@/features/availability/pages/UserDirectoryPage';
+import { UserCalendarPage } from '@/features/availability/pages/UserCalendarPage';
 
 const queryClient = new QueryClient();
 
@@ -17,7 +20,10 @@ function AppLayout() {
       <Navbar />
       <main>
         <Routes>
-          <Route path="/" element={<DashboardPage />} />
+          <Route path="/" element={<MyCalendarPage />} />
+          <Route path="/settings/availability" element={<TemplateSetupPage />} />
+          <Route path="/users" element={<UserDirectoryPage />} />
+          <Route path="/users/:userId" element={<UserCalendarPage />} />
         </Routes>
       </main>
     </>

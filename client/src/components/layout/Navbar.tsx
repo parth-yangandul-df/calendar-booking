@@ -1,6 +1,7 @@
 import { useAuth } from '@/features/auth/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Calendar, Search } from 'lucide-react';
 
 export function Navbar() {
   const { user, logout } = useAuth();
@@ -17,6 +18,14 @@ export function Navbar() {
         <h1 className="text-lg font-semibold">Calendar Booking</h1>
         {user && (
           <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-1 text-sm hover:text-primary">
+              <Calendar className="h-4 w-4" />
+              My Calendar
+            </Link>
+            <Link to="/users" className="flex items-center gap-1 text-sm hover:text-primary">
+              <Search className="h-4 w-4" />
+              Find People
+            </Link>
             <span className="text-sm text-muted-foreground">{user.email}</span>
             <Button variant="outline" size="sm" onClick={handleLogout}>
               Sign Out
