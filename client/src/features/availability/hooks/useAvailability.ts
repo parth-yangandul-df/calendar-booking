@@ -22,6 +22,7 @@ export function useUserSearch(searchQuery: string) {
   return useQuery({
     queryKey: ['users', 'search', searchQuery],
     queryFn: () => userApi.search(searchQuery).then((r) => r.data),
+    enabled: searchQuery.trim().length > 0,
   });
 }
 
