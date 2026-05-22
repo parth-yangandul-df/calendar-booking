@@ -7,9 +7,9 @@
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can sign up and log in with email and password
-- [ ] **AUTH-02**: User session persists across browser refresh (JWT with refresh tokens)
-- [ ] **AUTH-03**: User can log out
+- [x] **AUTH-01**: User can sign up and log in with email and password
+- [x] **AUTH-02**: User session persists across browser refresh (JWT with refresh tokens)
+- [x] **AUTH-03**: User can log out
 
 ### Calendar & Availability
 
@@ -59,9 +59,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
+| AUTH-03 | Phase 1 | Complete |
 | CAL-01 | Phase 2 | Pending |
 | CAL-02 | Phase 2 | Pending |
 | CAL-03 | Phase 3 | Pending |
