@@ -31,7 +31,7 @@ Project scaffolding (React + ASP.NET + SQL Server), user authentication (signup,
 - **D-06:** Refresh endpoint (`POST /api/auth/refresh`) that rotates the refresh token and issues a new access token
 
 ### Admin Seed Approach
-- **D-07:** Seed admin via EF Core migration using `HasData()` — admin email/password configured in `appsettings.Development.json`
+- **D-07:** Seed admin via runtime `AdminSeeder` class in `Program.cs` (not EF Core `HasData()`) — `HasData` stores password hashes at migration creation time. Runtime seeder uses `UserManager.CreateAsync()` and reads credentials from `appsettings.Development.json`, supporting environment variable overrides per D-09
 - **D-08:** Admin role assigned via seed data (not runtime creation)
 - **D-09:** Admin credentials: documented default for dev, overrideable via environment variables for production
 
