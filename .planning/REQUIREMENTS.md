@@ -59,27 +59,27 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | | Pending |
-| AUTH-02 | | Pending |
-| AUTH-03 | | Pending |
-| CAL-01 | | Pending |
-| CAL-02 | | Pending |
-| CAL-03 | | Pending |
-| BOOK-01 | | Pending |
-| BOOK-02 | | Pending |
-| BOOK-03 | | Pending |
-| CANCEL-01 | | Pending |
-| CANCEL-02 | | Pending |
-| NOTIF-01 | | Pending |
-| NOTIF-02 | | Pending |
-| ADMIN-01 | | Pending |
-| ADMIN-02 | | Pending |
-| ADMIN-03 | | Pending |
+| AUTH-01 | Phase 1 | Pending |
+| AUTH-02 | Phase 1 | Pending |
+| AUTH-03 | Phase 1 | Pending |
+| CAL-01 | Phase 2 | Pending |
+| CAL-02 | Phase 2 | Pending |
+| CAL-03 | Phase 3 | Pending |
+| BOOK-01 | Phase 3 | Pending |
+| BOOK-02 | Phase 3 | Pending |
+| BOOK-03 | Phase 3 | Pending |
+| CANCEL-01 | Phase 3 | Pending |
+| CANCEL-02 | Phase 3 | Pending |
+| NOTIF-01 | Phase 3 | Pending |
+| NOTIF-02 | Phase 3 | Pending |
+| ADMIN-01 | Phase 1 | Pending |
+| ADMIN-02 | Phase 4 | Pending |
+| ADMIN-03 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 16 total
-- Mapped to phases: 0
-- Unmapped: 16 ⚠️
+- Mapped to phases: 16
+- Unmapped: 0 ✅
 
 ## User Stories
 
