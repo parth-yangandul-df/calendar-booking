@@ -13,8 +13,8 @@
 
 ### Calendar & Availability
 
-- [ ] **CAL-01**: User can define their booking availability on a monthly calendar view
-- [ ] **CAL-02**: User can view another user's available time slots
+- [x] **CAL-01**: User can define their booking availability on a monthly calendar view
+- [x] **CAL-02**: User can view another user's available time slots
 - [ ] **CAL-03**: System prevents double-booking with atomic conflict detection
 
 ### Booking

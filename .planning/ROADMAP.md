@@ -10,7 +10,7 @@
 ## Phases
 
 - [x] **Phase 1: Foundation & Authentication** — Project scaffolding, auth system, seed admin user
-- [ ] **Phase 2: Availability Management** — Monthly availability definition and viewing others' slots
+- [x] **Phase 2: Availability Management** — Monthly availability definition and viewing others' slots (completed 2026-05-22)
 - [ ] **Phase 3: Booking Engine** — Slot booking, Google Meet links, email notifications, cancellations
 - [ ] **Phase 4: Admin Dashboard** — Admin monitoring of all users and bookings
 
@@ -45,12 +45,12 @@ Plans:
 1. User can navigate to a monthly calendar view and mark individual time slots as available/unavailable
 2. Availability changes save immediately and persist across sessions
 3. User can view another user's profile page and see their defined available slots for the current month
-**Plans:** 2/2 plans created
+**Plans:** 2/2 plans complete
 **UI hint:** yes
 
 Plans:
 - [x] 02-01-PLAN.md — Backend: entities, DbContext, migration, repository, controllers, user search, service registration
-- [ ] 02-02-PLAN.md — Frontend: month grid, side panel, template setup, user directory, routing, Navbar
+- [x] 02-02-PLAN.md — Frontend: month grid, side panel, template setup, user directory, routing, Navbar
 
 ### Phase 3: Booking Engine
 **Goal:** Users can book available slots with auto-generated Google Meet links, both parties receive email confirmations, and cancellations follow the 24-hour policy.
@@ -87,6 +87,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Authentication | 3/3 | ✅ Complete | 2026-05-22 |
-| 2. Availability Management | 2/2 | Planned | - |
+| 2. Availability Management | 2/2 | Complete   | 2026-05-22 |
 | 3. Booking Engine | 0/0 | Not started | - |
 | 4. Admin Dashboard | 0/0 | Not started | - |
