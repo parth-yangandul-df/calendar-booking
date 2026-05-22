@@ -42,23 +42,25 @@ export function MyCalendarPage() {
       : true; // default to true (show grid) until loaded
   }, [calendarDays]);
 
+  const selectedDateRef = useRef<string | null>(null);
+
   const debouncedRanges = useDebounce(editingRanges, 500);
 
   useEffect(() => {
-    if (!selectedDate) return;
-    const initial = initialRangesRef.current.get(selectedDate);
+    const date = selectedDateRef.current;
+    if (!date) return;
+    const initial = initialRangesRef.current.get(date);
     if (initial === undefined) return;
-    // Only save if different from initial
     if (JSON.stringify(debouncedRanges) !== JSON.stringify(initial)) {
-      saveOverride.mutate({ date: selectedDate, items: debouncedRanges });
+      saveOverride.mutate({ date, items: debouncedRanges });
     }
   }, [debouncedRanges]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDayClick = (date: string) => {
     const ranges = dayData[date]?.ranges ?? [];
+    selectedDateRef.current = date;
     setSelectedDate(date);
     setEditingRanges(ranges);
-    // Store initial if not already tracking
     if (!initialRangesRef.current.has(date)) {
       initialRangesRef.current.set(date, ranges);
     }
@@ -66,6 +68,7 @@ export function MyCalendarPage() {
 
   const handleClosePanel = () => {
     setSelectedDate(null);
+    selectedDateRef.current = null;
   };
 
   const handleRangesChange = (ranges: TimeRangeDto[]) => {

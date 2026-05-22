@@ -30,7 +30,7 @@ export function DaySidePanel({
 
   return (
     <Sheet open={date !== null} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <SheetContent side="right">
+      <SheetContent side="right" className="bg-background text-foreground">
         <SheetHeader className="mb-4">
           <SheetTitle>{formattedDate}</SheetTitle>
           <SheetDescription>

@@ -19,7 +19,9 @@ export function UserDirectoryPage() {
         <UserSearchBar value={searchQuery} onChange={setSearchQuery} />
       </div>
 
-      {isLoading ? (
+      {!debouncedSearch ? (
+        <p className="text-sm text-muted-foreground">Start typing to search for people.</p>
+      ) : isLoading ? (
         <p className="text-sm text-muted-foreground">Searching...</p>
       ) : !users || users.length === 0 ? (
         <p className="text-sm text-muted-foreground">No users found.</p>
