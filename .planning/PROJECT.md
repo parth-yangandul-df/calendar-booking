@@ -57,6 +57,10 @@ Users can reliably book time with each other through shared calendar availabilit
 |----------|-----------|---------|
 | Build from scratch | Greenfield project — no existing codebase | — Pending |
 | Web application | Accessible from any device without native install | — Pending |
+| ReactJS + ASP.NET + SQL Server stack | Enforced by project decision | — Pending |
+| ASP.NET Core Identity for auth | Built-in JWT + Identity for user management | — Pending |
+| EF Core for data access | Standard ORM for ASP.NET + SQL Server | — Pending |
+| Google Calendar API for Meet links | Required for auto-generating Google Meet links | — Pending |
 
 ---
 
