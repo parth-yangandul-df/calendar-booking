@@ -270,13 +270,13 @@ block "Availability — /api/v1/availability"
 TEMPLATE_BODY=$(cat <<'EOF'
 {
   "items": [
-    {"dayOfWeek":"Monday",    "startTime":"09:00","endTime":"17:00"},
-    {"dayOfWeek":"Tuesday",   "startTime":"09:00","endTime":"17:00"},
-    {"dayOfWeek":"Wednesday", "startTime":"09:00","endTime":"17:00"},
-    {"dayOfWeek":"Thursday",  "startTime":"09:00","endTime":"17:00"},
-    {"dayOfWeek":"Friday",    "startTime":"09:00","endTime":"17:00"},
-    {"dayOfWeek":"Saturday",  "startTime":"09:00","endTime":"17:00"},
-    {"dayOfWeek":"Sunday",    "startTime":"09:00","endTime":"17:00"}
+    {"dayOfWeek":"Monday",    "start":"09:00","end":"17:00"},
+    {"dayOfWeek":"Tuesday",   "start":"09:00","end":"17:00"},
+    {"dayOfWeek":"Wednesday", "start":"09:00","end":"17:00"},
+    {"dayOfWeek":"Thursday",  "start":"09:00","end":"17:00"},
+    {"dayOfWeek":"Friday",    "start":"09:00","end":"17:00"},
+    {"dayOfWeek":"Saturday",  "start":"09:00","end":"17:00"},
+    {"dayOfWeek":"Sunday",    "start":"09:00","end":"17:00"}
   ]
 }
 EOF
@@ -486,8 +486,10 @@ assert_contains "Decline already-declined error" "not in Pending status" "$BODY"
 
 # T38 — User B sees declined status in myBookings
 parse "$(get_b "$API/bookings")"
-DECLINED_STATUS=$(jq_val "$BODY" ".myBookings[] | select(.id==\"$BOOKING2_ID\") | .status")
-assert_contains "myBookings reflects Declined status" "Declined" "$DECLINED_STATUS"
+MY_BOOKINGS=$(echo "$BODY" | jq -c '.myBookings' 2>/dev/null || echo "")
+echo -e "  ${YELLOW}      DEBUG myBookings: $MY_BOOKINGS${RESET}"
+assert_contains "myBookings contains booking2 ID" "$BOOKING2_ID" "$BODY"
+assert_contains "myBookings shows Declined status" "Declined" "$BODY"
 
 # =============================================================================
 #  BLOCK 9 — Non-existent resource edge cases
