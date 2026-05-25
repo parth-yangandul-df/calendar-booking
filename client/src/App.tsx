@@ -11,6 +11,7 @@ import { MyCalendarPage } from '@/features/availability/pages/MyCalendarPage';
 import { TemplateSetupPage } from '@/features/availability/pages/TemplateSetupPage';
 import { UserDirectoryPage } from '@/features/availability/pages/UserDirectoryPage';
 import { UserCalendarPage } from '@/features/availability/pages/UserCalendarPage';
+import { BookingsPage } from '@/features/booking/pages/BookingsPage';
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ function AppLayout() {
           <Route path="/settings/availability" element={<TemplateSetupPage />} />
           <Route path="/users" element={<UserDirectoryPage />} />
           <Route path="/users/:userId" element={<UserCalendarPage />} />
+          <Route path="/bookings" element={<BookingsPage />} />
         </Routes>
       </main>
     </>

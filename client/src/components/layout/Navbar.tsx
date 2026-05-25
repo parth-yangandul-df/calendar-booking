@@ -1,7 +1,7 @@
 import { useAuth } from '@/features/auth/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Calendar, Search } from 'lucide-react';
+import { Calendar, Search, CalendarClock, CalendarCheck } from 'lucide-react';
 
 export function Navbar() {
   const { user, logout } = useAuth();
@@ -22,9 +22,17 @@ export function Navbar() {
               <Calendar className="h-4 w-4" />
               My Calendar
             </Link>
+            <Link to="/bookings" className="flex items-center gap-1 text-sm hover:text-primary">
+              <CalendarCheck className="h-4 w-4" />
+              Bookings
+            </Link>
             <Link to="/users" className="flex items-center gap-1 text-sm hover:text-primary">
               <Search className="h-4 w-4" />
               Find People
+            </Link>
+            <Link to="/settings/availability" className="flex items-center gap-1 text-sm hover:text-primary">
+              <CalendarClock className="h-4 w-4" />
+              Set Routine
             </Link>
             <span className="text-sm text-muted-foreground">{user.email}</span>
             <Button variant="outline" size="sm" onClick={handleLogout}>
