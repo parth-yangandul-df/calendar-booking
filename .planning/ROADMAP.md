@@ -65,8 +65,14 @@ Plans:
 5. Creator or booker can cancel a booking up to 24 hours before the scheduled time
 6. Cancellation attempts inside the 24-hour window are denied with a clear error message
 7. Both parties receive email notification when a booking is cancelled
-**Plans:** TBD
+**Plans:** 4 plans
 **UI hint:** yes
+
+Plans:
+- [ ] 03-01-PLAN.md — Booking backend core (entity, migration, repository with UPDLOCK, BookingController, slots endpoint)
+- [ ] 03-02-PLAN.md — Email + background jobs (Hangfire SQL Server, MailKit SMTP, 4 email job types)
+- [ ] 03-03-PLAN.md — Bookings page frontend (/bookings with Incoming + My Bookings tabs, shadcn Dialog/Badge/Tabs, Navbar link)
+- [ ] 03-04-PLAN.md — Calendar integration (DaySidePanel booker/owner modes, MonthGrid booking blocks, UserCalendarPage booking flow)
 
 ### Phase 4: Admin Dashboard
 **Goal:** Admin can monitor all registered users and all bookings across the platform.
