@@ -194,16 +194,16 @@ fi
 block "Auth — /api/v1/auth"
 
 # T01 — Register User A
-parse "$(post_nc "$API/auth/register" -d "{\"email\":\"$USER_A_EMAIL\",\"password\":\"$PASSWORD\"}")"
+parse "$(post_nc "$API/auth/register" -d "{\"email\":\"$USER_A_EMAIL\",\"password\":\"$PASSWORD\",\"confirmPassword\":\"$PASSWORD\"}")"
 assert_status "Register User A" "200" "$STATUS"
 assert_contains "Register User A — email in response" "$USER_A_EMAIL" "$BODY"
 
 # T02 — Register User B
-parse "$(post_nc "$API/auth/register" -d "{\"email\":\"$USER_B_EMAIL\",\"password\":\"$PASSWORD\"}")"
+parse "$(post_nc "$API/auth/register" -d "{\"email\":\"$USER_B_EMAIL\",\"password\":\"$PASSWORD\",\"confirmPassword\":\"$PASSWORD\"}")"
 assert_status "Register User B" "200" "$STATUS"
 
 # T03 — Duplicate registration
-parse "$(post_nc "$API/auth/register" -d "{\"email\":\"$USER_A_EMAIL\",\"password\":\"$PASSWORD\"}")"
+parse "$(post_nc "$API/auth/register" -d "{\"email\":\"$USER_A_EMAIL\",\"password\":\"$PASSWORD\",\"confirmPassword\":\"$PASSWORD\"}")"
 assert_status "Duplicate register returns 400" "400" "$STATUS"
 
 # T04 — Login with wrong password
