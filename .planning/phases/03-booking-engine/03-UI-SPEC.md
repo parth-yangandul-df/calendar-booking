@@ -57,7 +57,7 @@ Declared values (multiples of 4 — inherits Phase 1 + Phase 2 baseline):
 
 Exceptions:
 - Touch targets for Accept / Decline / Cancel buttons: **min-height 44px** (accessibility — WCAG 2.5.5)
-- Booking status badge: **py-0.5 px-2** (compact inline chip, consistent with MonthGrid block style)
+- Booking status badge: **py-1 px-2** (4px vertical padding — multiples-of-4 compliant, compact inline chip)
 
 ---
 
@@ -68,7 +68,7 @@ Inherits Phase 1 + Phase 2 baseline. All values use Tailwind/shadcn CSS variable
 | Role | Size | Weight | Line Height | Usage |
 |------|------|--------|-------------|-------|
 | Body | 14px (`text-sm`) | 400 (regular) | 1.5 | Side panel body text, booking list items, email copy |
-| Label | 12px (`text-xs`) | 500 (medium) | 1.4 | Badge labels, section eyebrows (e.g. "Incoming"), time range in blocks |
+| Label | 12px (`text-xs`) | 600 (semibold) | 1.4 | Badge labels, section eyebrows (e.g. "Incoming"), time range in blocks |
 | Heading | 16px (`text-base`) | 600 (semibold) | 1.2 | Side panel date heading, modal title, tab labels |
 | Display | 20px (`text-xl`) | 600 (semibold) | 1.2 | `/bookings` page title |
 
@@ -84,7 +84,7 @@ Inherits shadcn CSS variable palette (neutral base). New semantic colors for boo
 |------|-------|-------|
 | Dominant (60%) | `var(--background)` | Page surfaces, side panel background, modal backdrop |
 | Secondary (30%) | `var(--card)` / `var(--muted)` | Booking list cards, tab container, `/bookings` page sections |
-| Accent (10%) | `var(--primary)` | Confirm button in modal, "Accept" booking action button only |
+| Accent (10%) | `var(--primary)` | Confirm button in modal, "Accept Booking" button on Incoming tab only |
 | Destructive | `var(--destructive)` | Decline button, Cancel booking button, 24h cancellation error |
 
 ### Booking Status Color Contract
@@ -101,7 +101,7 @@ Inherits shadcn CSS variable palette (neutral base). New semantic colors for boo
 
 > **Collision check:** Availability own = `green-100/300` → Confirmed booking uses `emerald-100/400` (visually distinct — emerald is deeper). Availability read-only = `blue-100/300` — no booking status uses blue. Availability override = `orange-100/300` — no booking status uses orange. ✅ No collision.
 
-Accent reserved for: **Confirm button in booking modal**, **Accept action button on Incoming tab**.  
+Accent reserved for: **"Request Booking" confirm button in modal**, **"Accept Booking" button on Incoming tab**.  
 Never applied to: navigation links, availability blocks, read-only states, or decorative elements.
 
 ---
@@ -136,10 +136,13 @@ When owner clicks a day on their own calendar that has bookings:
 
 | Content | Condition | Actions |
 |---------|-----------|---------|
-| Pending booking block | Status = Pending | **Accept** (primary), **Decline** (destructive-outline) buttons |
-| Confirmed booking block | Status = Confirmed | **Cancel** (destructive-outline) button if >24h; disabled + tooltip "Within 24h" if ≤24h |
+| Pending booking block | Status = Pending | **Accept Booking** (primary), **Decline Booking** (destructive-outline) buttons |
+| Confirmed booking block | Status = Confirmed | **Cancel Booking** (destructive-outline) button if >24h; disabled + tooltip "Within 24h" if ≤24h |
 | Declined booking block | Status = Declined | Read-only, no actions |
 | Cancelled booking block | Status = Cancelled | Read-only, greyed out |
+
+**Destructive confirmation approach — "Cancel Booking":**  
+Use **inline two-step confirmation** within the same card/panel row. On first click, "Cancel Booking" button is replaced by two inline buttons: **"Yes, cancel it"** (destructive solid) and **"Keep it"** (ghost). No modal, no toast undo. Rationale: the action is irreversible (slot freed immediately, emails sent); an undo toast would require a hold-period that conflicts with D-18's "slot freed immediately" requirement.
 
 ### 3. Booking Confirmation Modal (Dialog)
 
@@ -151,7 +154,7 @@ Triggered: Booker clicks "Request Booking" in side panel.
 | Body | "Book **[StartTime]–[EndTime]** with **[OwnerName]** on **[Day, Month D, YYYY]**?" |
 | Sub-text | "Your request will be sent for approval." (14px, muted) |
 | CTA | "Request Booking" — primary button, full width |
-| Cancel | "Cancel" — ghost/outline button, full width |
+| Cancel | "Keep this time" — ghost/outline button, full width |
 | Layout | Two stacked full-width buttons (mobile-first); CTA on top |
 | Loading | CTA shows spinner + "Sending…", both buttons disabled during submission |
 
@@ -168,10 +171,10 @@ Triggered: Booker clicks "Request Booking" in side panel.
 
 | Element | Spec |
 |---------|------|
-| Layout | Card row: [Status badge] [Booker name + date/time] [Accept / Decline buttons] |
+| Layout | Card row: [Status badge] [Booker name + date/time] [Accept Booking / Decline Booking buttons] |
 | Status badge | Pending: amber chip (see color table) |
-| Accept button | Primary (min-h 44px) |
-| Decline button | Destructive outline (min-h 44px) |
+| Accept Booking button | Primary (min-h 44px) |
+| Decline Booking button | Destructive outline (min-h 44px) |
 | Empty state | "No pending requests" (heading) + "When someone requests a booking on your calendar, it will appear here." |
 
 **My Bookings tab — booking list item:**
@@ -223,9 +226,12 @@ Add "Bookings" link to `Navbar.tsx` — routes to `/bookings`. Icon: `CalendarCh
 | Element | Copy | Source |
 |---------|------|--------|
 | Primary CTA (booker) | "Request Booking" | D-11: "Request sent — awaiting approval" pattern |
-| Primary CTA (owner accept) | "Accept" | D-13: Accept action |
-| Destructive CTA (owner decline) | "Decline" | D-13: Decline action |
-| Destructive CTA (cancel) | "Cancel Booking" | D-16 |
+| Primary CTA (owner accept) | "Accept Booking" | D-13: Accept action — screen-reader clarity |
+| Destructive CTA (owner decline) | "Decline Booking" | D-13: Decline action — screen-reader clarity |
+| Destructive CTA (cancel — first click) | "Cancel Booking" | D-16 |
+| Destructive CTA (cancel — confirm step) | "Yes, cancel it" | Inline two-step confirmation (see §2 destructive approach) |
+| Ghost CTA (cancel — abort step) | "Keep it" | Inline two-step confirmation abort |
+| Modal dismiss CTA | "Keep this time" | Replaces generic "Cancel" — specific to booking context |
 | Modal title | "Confirm your booking" | Default |
 | Modal body | "Book **[HH:MM]–[HH:MM]** with **[Name]** on **[Day, Month D, YYYY]**?" | D-10 |
 | Modal sub-text | "Your request will be sent for approval." | D-10 |
@@ -261,7 +267,7 @@ Add "Bookings" link to `Navbar.tsx` — routes to `/bookings`. Icon: `CalendarCh
 
 ## Accessibility Notes
 
-- Accept / Decline / Cancel buttons: `min-height: 44px` — WCAG 2.5.5 target size
+- Accept Booking / Decline Booking / Cancel Booking buttons: `min-height: 44px` — WCAG 2.5.5 target size
 - Disabled cancel button within 24h window: include `title` tooltip with reason text
 - Confirmation modal: focus trapped inside Dialog while open (shadcn Dialog handles this via Radix)
 - Status badges: do not rely on color alone — always include text label
