@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
     public DbSet<WeeklyTemplate> WeeklyTemplates { get; set; } = null!;
     public DbSet<AvailabilityOverride> AvailabilityOverrides { get; set; } = null!;
+    public DbSet<Booking> Bookings { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -22,5 +23,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.ApplyConfiguration(new RefreshTokenConfiguration());
         builder.ApplyConfiguration(new WeeklyTemplateConfiguration());
         builder.ApplyConfiguration(new AvailabilityOverrideConfiguration());
+        builder.ApplyConfiguration(new BookingConfiguration());
     }
 }

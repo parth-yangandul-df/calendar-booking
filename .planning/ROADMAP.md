@@ -94,5 +94,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation & Authentication | 3/3 | ✅ Complete | 2026-05-22 |
 | 2. Availability Management | 2/2 | Complete   | 2026-05-22 |
-| 3. Booking Engine | 0/0 | Not started | - |
+| 3. Booking Engine | 0/4 | Planned | - |
 | 4. Admin Dashboard | 0/0 | Not started | - |

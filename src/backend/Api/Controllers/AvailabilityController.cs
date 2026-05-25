@@ -15,17 +15,20 @@ namespace CalendarBooking.Api.Controllers;
 public class AvailabilityController : ControllerBase
 {
     private readonly IAvailabilityRepository _repo;
+    private readonly IBookingRepository _bookingRepo;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IValidator<UpsertTemplateRequest> _templateValidator;
     private readonly IValidator<UpsertOverrideRequest> _overrideValidator;
 
     public AvailabilityController(
         IAvailabilityRepository repo,
+        IBookingRepository bookingRepo,
         UserManager<ApplicationUser> userManager,
         IValidator<UpsertTemplateRequest> templateValidator,
         IValidator<UpsertOverrideRequest> overrideValidator)
     {
         _repo = repo;
+        _bookingRepo = bookingRepo;
         _userManager = userManager;
         _templateValidator = templateValidator;
         _overrideValidator = overrideValidator;
@@ -126,5 +129,58 @@ public class AvailabilityController : ControllerBase
         var targetUserId = string.IsNullOrWhiteSpace(userId) ? GetUserId() : userId;
         var calendar = await _repo.GetCalendarAsync(targetUserId, month);
         return Ok(calendar);
+    }
+
+    // GET /api/v1/availability/slots?ownerId=&date=yyyy-MM-dd
+    [HttpGet("slots")]
+    public async Task<IActionResult> GetAvailableSlots([FromQuery] string ownerId, [FromQuery] string date)
+    {
+        if (!DateOnly.TryParseExact(date, "yyyy-MM-dd", out var parsedDate))
+            return BadRequest(new ProblemDetails { Title = "date must be in yyyy-MM-dd format" });
+
+        var owner = await _userManager.FindByIdAsync(ownerId);
+        if (owner is null)
+            return NotFound(new ProblemDetails { Title = "User not found" });
+
+        var month = parsedDate.ToString("yyyy-MM");
+        var calendarDays = await _repo.GetCalendarAsync(ownerId, month);
+        var dayData = calendarDays.FirstOrDefault(d => d.Date == date);
+
+        var existingBookings = await _bookingRepo.GetBookingsForDayAsync(ownerId, parsedDate);
+
+        // Compute free slots by subtracting booked intervals from availability windows
+        var availabilityRanges = dayData?.Ranges ?? new List<TimeRangeDto>();
+        var bookedSlots = existingBookings.Select(b => new
+        {
+            startTime = b.StartTime.ToString("HH:mm"),
+            endTime = b.EndTime.ToString("HH:mm"),
+            status = b.Status.ToString()
+        }).ToList();
+
+        // Subtract booked intervals from availability windows
+        var freeSlots = new List<object>();
+        foreach (var avail in availabilityRanges)
+        {
+            var windowStart = TimeOnly.Parse(avail.Start);
+            var windowEnd = TimeOnly.Parse(avail.End);
+
+            // Collect booked intervals that overlap this window
+            var overlapping = existingBookings
+                .Where(b => b.StartTime < windowEnd && b.EndTime > windowStart)
+                .OrderBy(b => b.StartTime)
+                .ToList();
+
+            var cursor = windowStart;
+            foreach (var booked in overlapping)
+            {
+                if (cursor < booked.StartTime)
+                    freeSlots.Add(new { start = cursor.ToString("HH:mm"), end = booked.StartTime.ToString("HH:mm") });
+                cursor = booked.EndTime > cursor ? booked.EndTime : cursor;
+            }
+            if (cursor < windowEnd)
+                freeSlots.Add(new { start = cursor.ToString("HH:mm"), end = windowEnd.ToString("HH:mm") });
+        }
+
+        return Ok(new { availableSlots = freeSlots, bookedSlots });
     }
 }

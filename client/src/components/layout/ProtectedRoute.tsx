@@ -4,13 +4,9 @@ import { useAuth } from '@/features/auth/useAuth';
 export function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-muted-foreground">Checking authentication...</p>
-      </div>
-    );
-  }
+  // While the session check is in flight, render nothing.
+  // This avoids flashing "Checking authentication..." text on every page load.
+  if (isLoading) return null;
 
   if (!isAuthenticated) return <Navigate to="/login" replace />;
 

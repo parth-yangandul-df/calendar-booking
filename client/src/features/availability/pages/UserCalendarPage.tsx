@@ -1,9 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MonthGrid } from '../components/MonthGrid';
+import { DaySidePanel } from '../components/DaySidePanel';
+import { CalendarLegend } from '../components/CalendarLegend';
 import { useMonthNavigation } from '../hooks/useMonthNavigation';
 import { useUserCalendar } from '../hooks/useAvailability';
 import { userApi } from '../api/userApi';
@@ -24,6 +26,8 @@ export function UserCalendarPage() {
     queryFn: () => userApi.getUser(userId!).then((r) => r.data),
     enabled: !!userId,
   });
+
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const dayData = useMemo<Record<string, CalendarDayDto>>(() => {
     if (!calendarDays) return {};
@@ -78,13 +82,30 @@ export function UserCalendarPage() {
       ) : isError ? (
         <p className="text-sm text-destructive">Could not load this user's availability.</p>
       ) : (
-        <MonthGrid
-          year={currentYear}
-          month={currentMonth}
-          dayData={dayData}
-          readOnly={true}
-        />
+        <>
+          <MonthGrid
+            year={currentYear}
+            month={currentMonth}
+            dayData={dayData}
+            readOnly={true}
+            onReadOnlyDayClick={setSelectedDate}
+          />
+          <CalendarLegend readOnly={true} />
+        </>
       )}
+
+      {/* Booker side panel */}
+      <DaySidePanel
+        date={selectedDate}
+        ranges={selectedDate ? (dayData[selectedDate]?.ranges ?? []) : []}
+        onRangesChange={() => {}}
+        onClose={() => setSelectedDate(null)}
+        onSave={() => {}}
+        readOnly={true}
+        mode="booker"
+        ownerId={userId}
+        ownerEmail={userInfo?.email}
+      />
     </div>
   );
 }

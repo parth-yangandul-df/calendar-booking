@@ -1,0 +1,15 @@
+# ASP.NET Core
+bin/
+obj/
+appsettings.*.local.json
+appsettings.*.Development.json
+*.user
+*.suo
+*.vs/
+.vs/
+*.csproj.user
+.DS_Store
+Thumbs.db
+*.log
+*.dll
+*.exe

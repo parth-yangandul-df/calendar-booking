@@ -39,7 +39,7 @@ Project scaffolding (React + ASP.NET + SQL Server), user authentication (signup,
 - **D-10:** Frontend: Vite + React 18 + React Router 6 + shadcn/ui + Tailwind CSS
 - **D-11:** Backend: ASP.NET Core 8 Web API with Clean Architecture layers (Api, Application, Infrastructure, Domain)
 - **D-12:** API versioning via URL prefix (`/api/v1/...`)
-- **D-13:** SQL Server via Docker for dev, connection string in `appsettings.Development.json` + User Secrets for production values
+- **D-13:** Local SQL Server (MSSQLSERVER default instance, SQL Server 2017) for dev with SQL Server Authentication, connection string with `TrustServerCertificate=True`
 
 ### Error Handling
 - **D-14:** API returns consistent problem-detail JSON (`ProblemDetails` RFC 7807)
