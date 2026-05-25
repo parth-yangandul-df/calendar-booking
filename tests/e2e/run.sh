@@ -4,16 +4,15 @@
 #  Phase 3: Booking Engine
 #
 #  Usage:
-#    ./run.sh                          # uses https://localhost:5000
-#    BASE_URL=https://localhost:7042 ./run.sh
+#    ./run.sh                          # uses http://localhost:5000
+#    BASE_URL=http://localhost:5001 ./run.sh
 #
 #  Requirements: curl, jq
-#  TLS: uses -k (skip self-signed cert) for localhost dev cert
 # =============================================================================
 
 set -euo pipefail
 
-BASE_URL="${BASE_URL:-https://localhost:5000}"
+BASE_URL="${BASE_URL:-http://localhost:5000}"
 API="$BASE_URL/api/v1"
 
 # ── Colours ──────────────────────────────────────────────────────────────────
@@ -140,15 +139,15 @@ jq_val() {
 
 # curl wrappers — always -k (dev cert), always follow redirects
 # Returns: "<HTTP_STATUS>|||<BODY>"
-get_a()   { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
-get_b()   { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
-post_a()  { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" --cookie-jar "$COOKIE_A" -X POST  -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
-post_b()  { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" --cookie-jar "$COOKIE_B" -X POST  -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
-post_nc() { curl -sk -o /tmp/resp.txt -w "%{http_code}"                                                -X POST  -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }  # no cookies
-patch_a() { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" --cookie-jar "$COOKIE_A" -X PATCH -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
-patch_b() { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" --cookie-jar "$COOKIE_B" -X PATCH -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
-del_a()   { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" --cookie-jar "$COOKIE_A" -X DELETE "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
-del_b()   { curl -sk -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" --cookie-jar "$COOKIE_B" -X DELETE "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+get_a()   { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+get_b()   { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+post_a()  { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" --cookie-jar "$COOKIE_A" -X POST  -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+post_b()  { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" --cookie-jar "$COOKIE_B" -X POST  -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+post_nc() { curl -s -o /tmp/resp.txt -w "%{http_code}"                                                -X POST  -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }  # no cookies
+patch_a() { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" --cookie-jar "$COOKIE_A" -X PATCH -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+patch_b() { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" --cookie-jar "$COOKIE_B" -X PATCH -H "Content-Type: application/json" "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+del_a()   { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_A" --cookie-jar "$COOKIE_A" -X DELETE "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
+del_b()   { curl -s -o /tmp/resp.txt -w "%{http_code}" --cookie "$COOKIE_B" --cookie-jar "$COOKIE_B" -X DELETE "$@" ; echo "|||$(cat /tmp/resp.txt)"; }
 
 # Split "<code>|||<body>" into STATUS and BODY
 parse() {
@@ -181,7 +180,7 @@ if ! command -v jq &>/dev/null; then
 fi
 
 # Check server is reachable
-if ! curl -sk --connect-timeout 5 "$BASE_URL/api/v1/auth/login" -o /dev/null; then
+if ! curl -s --connect-timeout 5 "$BASE_URL/api/v1/auth/login" -o /dev/null; then
   echo ""
   echo -e "${RED}ERROR: Cannot reach $BASE_URL${RESET}"
   echo -e "  Make sure the backend is running: cd src/backend/Api && dotnet run"
@@ -282,7 +281,7 @@ TEMPLATE_BODY=$(cat <<'EOF'
 }
 EOF
 )
-parse "$(curl -sk -o /tmp/resp.txt -w "%{http_code}" \
+parse "$(curl -s -o /tmp/resp.txt -w "%{http_code}" \
   --cookie "$COOKIE_A" --cookie-jar "$COOKIE_A" \
   -X PUT -H "Content-Type: application/json" \
   -d "$TEMPLATE_BODY" \
