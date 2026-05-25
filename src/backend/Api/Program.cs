@@ -1,11 +1,14 @@
 using System.Text;
 using CalendarBooking.Application.Auth.Validators;
 using CalendarBooking.Application.Common.Interfaces;
+using CalendarBooking.Infrastructure.Email;
+using CalendarBooking.Infrastructure.Jobs;
 using CalendarBooking.Infrastructure.Repositories;
 using CalendarBooking.Infrastructure.Seed;
 using CalendarBooking.Infrastructure.Services;
 using Domain.Entities;
 using FluentValidation;
+using Hangfire;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -86,6 +89,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IAvailabilityRepository, AvailabilityRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IBookingEmailJobService, BookingEmailJobService>();
+
+builder.Services.AddHangfire(config =>
+    config.UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHangfireServer();
+
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
 builder.Services.AddControllers();
@@ -108,6 +119,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseHangfireDashboard("/hangfire");
 app.MapControllers();
 
 // Apply migrations and seed admin on startup
