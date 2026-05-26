@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -173,15 +174,18 @@ function BookingsTab() {
 
   return (
     <div>
-      <Tabs value={statusFilter} onValueChange={handleStatusChange}>
-        <TabsList className="mb-4">
-          <TabsTrigger value="all">All</TabsTrigger>
-          <TabsTrigger value="Pending">Pending</TabsTrigger>
-          <TabsTrigger value="Confirmed">Confirmed</TabsTrigger>
-          <TabsTrigger value="Declined">Declined</TabsTrigger>
-          <TabsTrigger value="Cancelled">Cancelled</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="flex gap-2 mb-4">
+        {['all', 'Pending', 'Confirmed', 'Declined', 'Cancelled'].map((s) => (
+          <Button
+            key={s}
+            variant={statusFilter === s ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => handleStatusChange(s)}
+          >
+            {s === 'all' ? 'All' : s}
+          </Button>
+        ))}
+      </div>
 
       {isLoading && <p className="text-sm text-muted-foreground">Loading...</p>}
 
