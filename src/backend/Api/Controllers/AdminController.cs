@@ -25,8 +25,6 @@ public class AdminController : ControllerBase
         _context = context;
     }
 
-    private string GetUserId() => _userManager.GetUserId(User)!;
-
     // GET /api/v1/admin/stats
     [HttpGet("stats")]
     public async Task<IActionResult> GetStats()
@@ -49,6 +47,9 @@ public class AdminController : ControllerBase
         if (pageSize > 100) pageSize = 100;
 
         IQueryable<ApplicationUser> query = _userManager.Users.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search) && search.Length > 100)
+            return BadRequest("Search term must not exceed 100 characters.");
 
         if (!string.IsNullOrWhiteSpace(search))
             query = query.Where(u => u.Email!.Contains(search));
