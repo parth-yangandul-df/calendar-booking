@@ -8,11 +8,11 @@ export function AdminGuard() {
   const hasShownToast = useRef(false);
 
   useEffect(() => {
-    if (!isLoading && !user?.isAdmin && !hasShownToast.current) {
+    if (!isLoading && user && !user.isAdmin && !hasShownToast.current) {
       hasShownToast.current = true;
       toast.error("You don't have permission to access this page.");
     }
-  }, [isLoading, user?.isAdmin]);
+  }, [isLoading, user]);
 
   if (isLoading) return null;
 
