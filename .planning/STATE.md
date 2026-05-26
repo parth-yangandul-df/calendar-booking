@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: ready_to_execute
-last_updated: "2026-05-26T10:39:09.780Z"
+status: ready_to_plan
+last_updated: "2026-05-26T11:21:31.411Z"
 progress:
   total_phases: 4
   completed_phases: 3
-  total_plans: 9
+  total_plans: 11
   completed_plans: 9
   percent: 75
 ---
@@ -20,12 +20,12 @@ progress:
 |-------|-------|
 | **Milestone** | v1.0 |
 | **Core Value** | Users can reliably book time with each other through shared calendar availability, with automatic Google Meet links and email confirmations |
-| **Current Focus** | Phase 2 complete — ready for Phase 3 (Booking Engine) |
+| **Current Focus** | Phase 3 complete — ready for Phase 4 (Admin Dashboard) |
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
+Phase: 04 (admin-dashboard) — EXECUTING
+Plan: 1 of 2
 | Phase | Plan | Status |
 |-------|------|--------|
 | 1 | Foundation & Authentication | ✅ Complete |
@@ -33,8 +33,7 @@ Plan: Not started
 | 2 Plan 02 | Availability Frontend | 📋 Ready |
 
 ```
-Progress: [██████████] 100%
-           ████████████░░░░  62%
+Progress: [████████████████████] 9/9 plans (100%)
 ```
 
 ## Performance Metrics
@@ -58,24 +57,26 @@ Progress: [██████████] 100%
 | 6 | Single GET /calendar endpoint with optional userId param | ASP.NET Core cannot have two GET actions with identical route templates; optional param cleanly handles both own and others' calendar |
 | 7 | Full-replace semantics for template and override writes | Prevents delta-sync race conditions (Pitfall 2 from RESEARCH.md); idempotent design |
 | 8 | UserDto exposes only Id + Email | T-02-03: no IsAdmin, no CreatedAt, no PII beyond email in user search results |
+| 9 | UPDLOCK+ROWLOCK for double-booking prevention | First writer wins; second gets 409 Conflict — pessimistic locking on slot check |
+| 10 | Placeholder Meet URL in Phase 3 | Real Google Calendar API deferred to post-v1; placeholder format `https://meet.google.com/placeholder-{id}` |
+| 11 | Hangfire SQL Server job store for email | Background email dispatch with persistent job store; dashboard at /hangfire (dev only) |
+| 12 | MailKit SMTP with env-var config | Credentials from Email:* env vars; silent no-op when SMTP not configured (dev-friendly) |
 
-- [Phase ?]: Used failed request queue pattern to prevent race condition from multiple simultaneous 401s
-- [Phase ?]: Session restore uses httpOnly cookies (no localStorage) preventing XSS token theft (D-04)
+- [Phase 1]: Used failed request queue pattern to prevent race condition from multiple simultaneous 401s
+- [Phase 1]: Session restore uses httpOnly cookies (no localStorage) preventing XSS token theft (D-04)
 - [Phase 02-01]: GetUserId() returns string! — [Authorize] guarantees auth, null dereference cannot occur at runtime
 
 ### Active Tasks
 
-- [x] Phase 1 complete — auth system (signup/login/logout/refresh), admin seed, project scaffold
-- [x] Phase 2 context gathered (14 decisions locked)
-- [x] Phase 2 researched and planned (2 plans, 2 waves)
-- [x] Phase 2 Plan 01 complete — availability backend (entities, migration, repo, controllers)
-- [x] Phase 2 Plan 02 — availability frontend (month grid, side panel, template setup, user directory) ✅
-- [x] Phase 3 planned (4 plans, 4 waves) — booking engine ready to execute
+- [x] Phase 1 complete — auth system, admin seed, project scaffold
+- [x] Phase 2 complete — availability backend + frontend (month grid, side panel, user directory)
+- [x] Phase 3 complete — booking engine (backend API, Hangfire email jobs, bookings UI, calendar integration)
+- [ ] Phase 4 — Admin Dashboard (ready to plan)
 
 ### Open Questions
 
-- Google Calendar API credentials / OAuth setup details (deferred to Phase 3 planning)
-- SMTP/email service provider choice (deferred to Phase 3 planning)
+- Google Calendar API real integration — deferred post-v1
+- SMTP provider for production email — placeholder config in dev mode
 - Database: Local SQL Server (MSSQLSERVER, SQL Server 2017) with SQL Server Auth
 
 ### Blockers
@@ -91,7 +92,8 @@ Progress: [██████████] 100%
 | 3 | 2026-05-22 | Discussed, researched, and planned Phase 2 (Availability Management) — 2 plans | Planned |
 | 4 | 2026-05-22 | Executed Phase 2 Plan 01 — availability backend (entities, migration, repo, 2 controllers) | Completed |
 | 5 | 2026-05-22 | Executed Phase 2 Plan 02 — availability frontend (month grid, side panel, template setup, user directory) | Completed |
+| 6 | 2026-05-26 | Verified Phase 3, transitioned to Phase 4, planning Phase 4 | In progress |
 
 ---
 
-*State last updated: 2026-05-22*
+*State last updated: 2026-05-26*
