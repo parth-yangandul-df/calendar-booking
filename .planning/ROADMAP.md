@@ -11,7 +11,7 @@
 
 - [x] **Phase 1: Foundation & Authentication** — Project scaffolding, auth system, seed admin user
 - [x] **Phase 2: Availability Management** — Monthly availability definition and viewing others' slots (completed 2026-05-22)
-- [ ] **Phase 3: Booking Engine** — Slot booking, Google Meet links, email notifications, cancellations
+- [x] **Phase 3: Booking Engine** — Slot booking, Google Meet links, email notifications, cancellations (completed 2026-05-26)
 - [ ] **Phase 4: Admin Dashboard** — Admin monitoring of all users and bookings
 
 ---
@@ -65,14 +65,14 @@ Plans:
 5. Creator or booker can cancel a booking up to 24 hours before the scheduled time
 6. Cancellation attempts inside the 24-hour window are denied with a clear error message
 7. Both parties receive email notification when a booking is cancelled
-**Plans:** 4 plans
+**Plans:** 4/4 plans complete
 **UI hint:** yes
 
 Plans:
-- [ ] 03-01-PLAN.md — Booking backend core (entity, migration, repository with UPDLOCK, BookingController, slots endpoint)
-- [ ] 03-02-PLAN.md — Email + background jobs (Hangfire SQL Server, MailKit SMTP, 4 email job types)
-- [ ] 03-03-PLAN.md — Bookings page frontend (/bookings with Incoming + My Bookings tabs, shadcn Dialog/Badge/Tabs, Navbar link)
-- [ ] 03-04-PLAN.md — Calendar integration (DaySidePanel booker/owner modes, MonthGrid booking blocks, UserCalendarPage booking flow)
+- [x] 03-01-PLAN.md — Booking backend core (entity, migration, repository with UPDLOCK, BookingController, slots endpoint)
+- [x] 03-02-PLAN.md — Email + background jobs (Hangfire SQL Server, MailKit SMTP, 4 email job types)
+- [x] 03-03-PLAN.md — Bookings page frontend (/bookings with Incoming + My Bookings tabs, shadcn Dialog/Badge/Tabs, Navbar link)
+- [x] 03-04-PLAN.md — Calendar integration (DaySidePanel booker/owner modes, MonthGrid booking blocks, UserCalendarPage booking flow)
 
 ### Phase 4: Admin Dashboard
 **Goal:** Admin can monitor all registered users and all bookings across the platform.
@@ -83,8 +83,12 @@ Plans:
 1. Admin can view a paginated list of all registered users with account details
 2. Admin can view all bookings across all users with full details (booker, owner, time, Meet link, status)
 3. Admin-only pages are inaccessible to non-admin users (authorization enforced)
-**Plans:** TBD
+**Plans:** 2 plans
 **UI hint:** yes
+
+Plans:
+- [ ] 04-01-PLAN.md — Admin backend API (AdminController, paginated users/bookings/stats endpoints, AdminOnly auth policy)
+- [ ] 04-02-PLAN.md — Admin frontend (AdminPage with Dashboard/Users/Bookings tabs, AdminGuard, Navbar link)
 
 ---
 
@@ -94,5 +98,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation & Authentication | 3/3 | ✅ Complete | 2026-05-22 |
 | 2. Availability Management | 2/2 | Complete   | 2026-05-22 |
-| 3. Booking Engine | 0/4 | Planned | - |
-| 4. Admin Dashboard | 0/0 | Not started | - |
+| 3. Booking Engine | 4/4 | Complete    | 2026-05-26 |
+| 4. Admin Dashboard | 0/2 | Planning complete | - |
