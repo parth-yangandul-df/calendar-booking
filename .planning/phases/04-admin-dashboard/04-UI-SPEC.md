@@ -73,14 +73,14 @@ Exceptions: none for this phase.
 | Caption | 12px | 600 (semibold) | 1.5 | `text-xs font-semibold` | Table headers, admin badge, status badges |
 | Body | 14px | 400 (regular) | 1.5 | `text-sm` | Table cell content, stat card labels, tab labels, empty state body |
 | Heading | 20px | 600 (semibold) | 1.2 | `text-xl font-semibold` | Page title "Admin", empty state heading |
-| Display | 30px | 700 (bold) | 1.1 | `text-3xl font-bold` | Stat card numerical values |
+| Display | 30px | 600 (semibold) | 1.1 | `text-3xl font-semibold` | Stat card numerical values |
 
 ### Notes
 
 - **Table header font:** `text-xs font-semibold text-muted-foreground` — matches calendar grid header pattern from MonthGrid.
 - **Meta/secondary text:** `text-sm text-muted-foreground` — dates, timestamps, secondary info in table cells.
 - **Stat card label:** `text-sm text-muted-foreground` — "Total users" / "Total bookings" label below the number.
-- **Empty state:** Heading at `text-base font-medium` (16px — existing pattern from BookingsPage) + body at `text-sm text-muted-foreground`.
+- **Empty state:** Heading at `text-xl font-semibold` (20px — matching Heading role) + body at `text-sm text-muted-foreground`.
 - **Admin badge in table:** `text-xs font-semibold` with `Badge variant="secondary"` (shadcn neutral badge style).
 
 ---
@@ -135,7 +135,7 @@ Accent reserved for: Stat card number values, page title, active tab selection, 
 ### Dashboard Tab (D-03, D-04)
 
 - Two stat cards in a horizontal row: `Total Users` (count) and `Total Bookings` (count)
-- Each card: `Card size="sm"` → Display number (30px bold) + label (14px muted)
+- Each card: `Card size="sm"` → Display number (30px semibold) + label (14px muted)
 - If both counts are 0, cards still render showing "0" — no separate empty state needed
 
 ### Users Tab (D-05, D-06, D-07, D-08)
