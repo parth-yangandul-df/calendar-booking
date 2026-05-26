@@ -9,6 +9,7 @@ using CalendarBooking.Infrastructure.Services;
 using Domain.Entities;
 using FluentValidation;
 using Hangfire;
+using Hangfire.Dashboard;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -122,7 +123,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHangfireDashboard("/hangfire");
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    Authorization = new[] { new HangfireAdminAuthorizationFilter() }
+});
 app.MapControllers();
 
 // Apply migrations and seed admin on startup
@@ -136,3 +140,13 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+public class HangfireAdminAuthorizationFilter : IDashboardAuthorizationFilter
+{
+    public bool Authorize(DashboardContext context)
+    {
+        var httpContext = context.GetHttpContext();
+        return httpContext.User.Identity?.IsAuthenticated == true
+            && httpContext.User.HasClaim("IsAdmin", "true");
+    }
+}
