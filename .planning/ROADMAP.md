@@ -12,7 +12,7 @@
 - [x] **Phase 1: Foundation & Authentication** — Project scaffolding, auth system, seed admin user
 - [x] **Phase 2: Availability Management** — Monthly availability definition and viewing others' slots (completed 2026-05-22)
 - [x] **Phase 3: Booking Engine** — Slot booking, Google Meet links, email notifications, cancellations (completed 2026-05-26)
-- [ ] **Phase 4: Admin Dashboard** — Admin monitoring of all users and bookings
+- [x] **Phase 4: Admin Dashboard** — Admin monitoring of all users and bookings (completed 2026-05-26)
 
 ---
 
@@ -98,7 +98,7 @@ Plans:
 2. Admin can view all bookings across all users with full details (booker, owner, time, Meet link, status)
 3. Admin-only pages are inaccessible to non-admin users (authorization enforced)
 
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 **UI hint:** yes
 
 Plans:
@@ -108,7 +108,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 04-02-PLAN.md — Admin frontend (AdminPage with Dashboard/Users/Bookings tabs, AdminGuard, Navbar link)
+- [x] 04-02-PLAN.md — Admin frontend (AdminPage with Dashboard/Users/Bookings tabs, AdminGuard, Navbar link)
 
 ---
 
@@ -119,4 +119,4 @@ Plans:
 | 1. Foundation & Authentication | 3/3 | ✅ Complete | 2026-05-22 |
 | 2. Availability Management | 2/2 | Complete   | 2026-05-22 |
 | 3. Booking Engine | 4/4 | Complete    | 2026-05-26 |
-| 4. Admin Dashboard | 1/2 | In Progress|  |
+| 4. Admin Dashboard | 2/2 | Complete   | 2026-05-26 |
