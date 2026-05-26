@@ -12,6 +12,8 @@ import { TemplateSetupPage } from '@/features/availability/pages/TemplateSetupPa
 import { UserDirectoryPage } from '@/features/availability/pages/UserDirectoryPage';
 import { UserCalendarPage } from '@/features/availability/pages/UserCalendarPage';
 import { BookingsPage } from '@/features/booking/pages/BookingsPage';
+import { AdminPage } from '@/features/admin/pages/AdminPage';
+import { AdminGuard } from '@/features/admin/components/AdminGuard';
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,9 @@ function AppLayout() {
           <Route path="/users" element={<UserDirectoryPage />} />
           <Route path="/users/:userId" element={<UserCalendarPage />} />
           <Route path="/bookings" element={<BookingsPage />} />
+          <Route element={<AdminGuard />}>
+            <Route path="/admin" element={<AdminPage />} />
+          </Route>
         </Routes>
       </main>
     </>

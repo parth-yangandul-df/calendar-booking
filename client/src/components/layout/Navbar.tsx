@@ -1,7 +1,7 @@
 import { useAuth } from '@/features/auth/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Calendar, Search, CalendarClock, CalendarCheck } from 'lucide-react';
+import { Calendar, Search, CalendarClock, CalendarCheck, ShieldCheck } from 'lucide-react';
 
 export function Navbar() {
   const { user, logout } = useAuth();
@@ -34,6 +34,12 @@ export function Navbar() {
               <CalendarClock className="h-4 w-4" />
               Set Routine
             </Link>
+            {user.isAdmin && (
+              <Link to="/admin" className="flex items-center gap-1 text-sm hover:text-primary">
+                <ShieldCheck className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
             <span className="text-sm text-muted-foreground">{user.email}</span>
             <Button variant="outline" size="sm" onClick={handleLogout}>
               Sign Out
