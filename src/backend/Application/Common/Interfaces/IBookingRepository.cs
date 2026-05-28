@@ -17,7 +17,7 @@ public interface IBookingRepository
     Task<List<BookingEntity>> GetOwnedConfirmedBookingsAsync(string ownerId);
 
     Task<BookingEntity?> GetByIdAsync(Guid id);
-    Task AcceptBookingAsync(Guid id, string meetUrl);
+    Task AcceptBookingAsync(Guid id, string meetUrl, string? googleEventId = null);
     Task DeclineBookingAsync(Guid id);
     Task CancelBookingAsync(Guid id);
 

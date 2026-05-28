@@ -6,6 +6,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CalendarBooking.Api.Controllers;
 
@@ -18,17 +19,23 @@ public class BookingController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IValidator<CreateBookingRequest> _validator;
     private readonly IBookingEmailJobService _emailJobs;
+    private readonly IGoogleCalendarService _googleCalendar;
+    private readonly ILogger<BookingController> _logger;
 
     public BookingController(
         IBookingRepository repo,
         UserManager<ApplicationUser> userManager,
         IValidator<CreateBookingRequest> validator,
-        IBookingEmailJobService emailJobs)
+        IBookingEmailJobService emailJobs,
+        IGoogleCalendarService googleCalendar,
+        ILogger<BookingController> logger)
     {
         _repo = repo;
         _userManager = userManager;
         _validator = validator;
         _emailJobs = emailJobs;
+        _googleCalendar = googleCalendar;
+        _logger = logger;
     }
 
     private string GetUserId() => _userManager.GetUserId(User)!;
@@ -104,17 +111,27 @@ public class BookingController : ControllerBase
         if (booking.Status != BookingStatus.Pending)
             return BadRequest(new ProblemDetails { Title = "Booking is not in Pending status" });
 
-        // D-20: Real Google Meet link generation requires:
-        // 1. Create a Google Cloud project at console.cloud.google.com
-        // 2. Enable the Google Calendar API for the project
-        // 3. Create a Service Account under IAM & Admin → Service Accounts
-        // 4. Download the JSON key file
-        // 5. Set GOOGLE_APPLICATION_CREDENTIALS env var to the path of the JSON key file
-        // 6. Share a dedicated Google Calendar with the service account (editor permission)
-        // Phase 3 uses placeholder URL: https://meet.google.com/placeholder-{bookingId}
-        // Replace AcceptBookingAsync MeetUrl generation with Google Calendar API call in a future phase.
-        var meetUrl = $"https://meet.google.com/placeholder-{id}";
-        await _repo.AcceptBookingAsync(id, meetUrl);
+        GoogleMeetResult? meetResult = null;
+        try
+        {
+            var slotStart = booking.Date.ToDateTime(booking.StartTime, DateTimeKind.Utc);
+            var slotEnd = booking.Date.ToDateTime(booking.EndTime, DateTimeKind.Utc);
+            var ownerEmail = (await _userManager.FindByIdAsync(booking.OwnerId))?.Email ?? string.Empty;
+            var bookerEmail = (await _userManager.FindByIdAsync(booking.BookerId))?.Email ?? string.Empty;
+
+            meetResult = await _googleCalendar.CreateMeetingAsync(
+                $"Booking: {ownerEmail} \u00d7 {bookerEmail}",
+                $"Booking reference: {id:N}",
+                slotStart, slotEnd,
+                ownerEmail, bookerEmail);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Google Calendar API call failed for booking {BookingId}, using placeholder", id);
+        }
+
+        var meetUrl = meetResult?.MeetUrl ?? $"https://meet.google.com/placeholder-{id}";
+        await _repo.AcceptBookingAsync(id, meetUrl, meetResult?.EventId);
 
         var updated = await _repo.GetByIdAsync(id);
         var ownerUser = await _userManager.FindByIdAsync(updated!.OwnerId);
@@ -172,6 +189,11 @@ public class BookingController : ControllerBase
         var diff = slotStart - DateTime.UtcNow;
         if (diff.TotalHours < 24)
             return BadRequest(new ProblemDetails { Title = "Cannot cancel within 24 hours of the booking" });
+
+        if (!string.IsNullOrWhiteSpace(booking.GoogleEventId))
+        {
+            await _googleCalendar.DeleteEventAsync(booking.GoogleEventId);
+        }
 
         await _repo.CancelBookingAsync(id);
 

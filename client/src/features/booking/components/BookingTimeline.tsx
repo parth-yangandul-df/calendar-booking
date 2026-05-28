@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 
 interface BookingTimelineProps {
   availableSlots: Array<{ start: string; end: string }>;

@@ -2,7 +2,7 @@
 bin/
 obj/
 appsettings.*.local.json
-appsettings.*.Development.json
+appsettings.Development.json
 *.user
 *.suo
 *.vs/

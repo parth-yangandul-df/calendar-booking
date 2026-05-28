@@ -7,6 +7,7 @@ export function useBookings() {
   return useQuery({
     queryKey: ['bookings'],
     queryFn: () => bookingApi.getBookings().then((r) => r.data),
+    refetchInterval: 30_000,
   });
 }
 
@@ -15,7 +16,8 @@ export function useAcceptBooking() {
   return useMutation({
     mutationFn: (id: string) => bookingApi.acceptBooking(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
       toast.success('Booking confirmed. A meeting link has been attached.');
     },
     onError: () => {
@@ -29,7 +31,8 @@ export function useDeclineBooking() {
   return useMutation({
     mutationFn: (id: string) => bookingApi.declineBooking(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
       toast.success('Booking declined.');
     },
     onError: () => {
@@ -43,7 +46,8 @@ export function useCancelBooking() {
   return useMutation({
     mutationFn: (id: string) => bookingApi.cancelBooking(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
       toast.success('Booking cancelled.');
     },
     onError: (error: AxiosError<{ title?: string }>) => {
@@ -61,7 +65,8 @@ export function useCreateBooking() {
   return useMutation({
     mutationFn: (data: CreateBookingRequest) => bookingApi.createBooking(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+      queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
       toast.success('Request sent — awaiting approval.');
     },
     onError: (error: AxiosError<{ title?: string }>) => {

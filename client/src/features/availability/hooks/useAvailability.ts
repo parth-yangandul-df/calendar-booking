@@ -32,7 +32,8 @@ export function useSaveOverride() {
     mutationFn: (override: { date: string; items: UpsertOverrideItem[] }) =>
       availabilityApi.saveOverride(override),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['availability', 'calendar'] });
+      queryClient.invalidateQueries({ queryKey: ['availability', 'calendar'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
       toast.success('Availability saved');
     },
     onError: () => toast.error('Failed to save availability'),
@@ -40,10 +41,12 @@ export function useSaveOverride() {
 }
 
 export function useSaveTemplate() {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: { items: UpsertTemplateItem[] }) =>
       availabilityApi.setTemplate(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['availability', 'calendar'], refetchType: 'all' });
       toast.success('Weekly template saved');
     },
     onError: () => toast.error('Failed to save template'),

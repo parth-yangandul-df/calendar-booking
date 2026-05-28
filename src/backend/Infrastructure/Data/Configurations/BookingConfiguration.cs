@@ -34,6 +34,9 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.Property(b => b.MeetUrl)
                .HasMaxLength(500);
 
+        builder.Property(b => b.GoogleEventId)
+               .HasMaxLength(500);
+
         builder.Property(b => b.CancelledAt)
                .HasColumnType("datetime2");
 

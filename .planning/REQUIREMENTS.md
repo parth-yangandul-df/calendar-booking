@@ -15,23 +15,23 @@
 
 - [x] **CAL-01**: User can define their booking availability on a monthly calendar view
 - [x] **CAL-02**: User can view another user's available time slots
-- [ ] **CAL-03**: System prevents double-booking with atomic conflict detection
+- [x] **CAL-03**: System prevents double-booking with atomic conflict detection
 
 ### Booking
 
-- [ ] **BOOK-01**: User can select and book an available slot on another user's calendar
-- [ ] **BOOK-02**: Booking auto-generates and attaches a Google Meet link
-- [ ] **BOOK-03**: Both booker and calendar owner receive confirmation of the booking
+- [x] **BOOK-01**: User can select and book an available slot on another user's calendar
+- [x] **BOOK-02**: Booking auto-generates and attaches a Google Meet link
+- [x] **BOOK-03**: Both booker and calendar owner receive confirmation of the booking
 
 ### Cancellation
 
-- [ ] **CANCEL-01**: Creator or booker can cancel a booking up to 24 hours before the scheduled time
-- [ ] **CANCEL-02**: System enforces the 24-hour cancellation window (cancellations past window are denied)
+- [x] **CANCEL-01**: Creator or booker can cancel a booking up to 24 hours before the scheduled time
+- [x] **CANCEL-02**: System enforces the 24-hour cancellation window (cancellations past window are denied)
 
 ### Notifications
 
-- [ ] **NOTIF-01**: System sends email notification to both parties when a booking is created
-- [ ] **NOTIF-02**: System sends email notification to both parties when a booking is cancelled
+- [x] **NOTIF-01**: System sends email notification to both parties when a booking is created
+- [x] **NOTIF-02**: System sends email notification to both parties when a booking is cancelled
 
 ### Admin
 
@@ -64,14 +64,14 @@
 | AUTH-03 | Phase 1 | Complete |
 | CAL-01 | Phase 2 | In Progress (backend complete) |
 | CAL-02 | Phase 2 | In Progress (backend complete) |
-| CAL-03 | Phase 3 | Pending |
-| BOOK-01 | Phase 3 | Pending |
-| BOOK-02 | Phase 3 | Pending |
-| BOOK-03 | Phase 3 | Pending |
-| CANCEL-01 | Phase 3 | Pending |
-| CANCEL-02 | Phase 3 | Pending |
-| NOTIF-01 | Phase 3 | Pending |
-| NOTIF-02 | Phase 3 | Pending |
+| CAL-03 | Phase 3 | Complete |
+| BOOK-01 | Phase 3 | Complete |
+| BOOK-02 | Phase 3 | Complete |
+| BOOK-03 | Phase 3 | Complete |
+| CANCEL-01 | Phase 3 | Complete |
+| CANCEL-02 | Phase 3 | Complete |
+| NOTIF-01 | Phase 3 | Complete |
+| NOTIF-02 | Phase 3 | Complete |
 | ADMIN-01 | Phase 1 | Pending |
 | ADMIN-02 | Phase 4 | Pending |
 | ADMIN-03 | Phase 4 | Pending |

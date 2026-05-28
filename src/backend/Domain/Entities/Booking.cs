@@ -12,6 +12,7 @@ public class Booking
     public TimeOnly EndTime { get; set; }
     public BookingStatus Status { get; set; } = BookingStatus.Pending;
     public string? MeetUrl { get; set; }
+    public string? GoogleEventId { get; set; }
     public DateTime? CancelledAt { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

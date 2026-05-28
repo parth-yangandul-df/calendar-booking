@@ -269,7 +269,7 @@ export function DaySidePanel({
                       {
                         onSuccess: () => {
                           setDialogOpen(false);
-                          onClose();
+                          onBookingAction?.();
                         },
                       }
                     );

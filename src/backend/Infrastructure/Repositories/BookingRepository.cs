@@ -81,12 +81,13 @@ public class BookingRepository : IBookingRepository
         return await _context.Bookings.FirstOrDefaultAsync(b => b.Id == id);
     }
 
-    public async Task AcceptBookingAsync(Guid id, string meetUrl)
+    public async Task AcceptBookingAsync(Guid id, string meetUrl, string? googleEventId = null)
     {
         var booking = await _context.Bookings.FindAsync(id);
         if (booking is null) return;
         booking.Status = BookingStatus.Confirmed;
         booking.MeetUrl = meetUrl;
+        booking.GoogleEventId = googleEventId;
         await _context.SaveChangesAsync();
     }
 

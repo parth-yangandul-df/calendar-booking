@@ -14,9 +14,7 @@ public class UpsertTemplateValidator : AbstractValidator<UpsertTemplateRequest>
     public UpsertTemplateValidator()
     {
         RuleFor(x => x.Items)
-            .NotNull()
-            .Must(items => items.Select(i => i.DayOfWeek).Distinct(StringComparer.OrdinalIgnoreCase).Count() == items.Count)
-            .WithMessage("Duplicate days are not allowed in the template.");
+            .NotNull();
 
         RuleForEach(x => x.Items).ChildRules(item =>
         {

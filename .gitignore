@@ -1,0 +1,16 @@
+.agents/
+.qodo
+tests/
+graphify-out/
+.planning/config.json
+tests/e2e/run.sh
+SKILL.md
+DESIGN.md
+api_err.txt
+api_out.txt
+client/@/
+
+# Secrets — appsettings contain DB passwords, JWT keys, OAuth credentials, SMTP secrets
+appsettings.*.local.json
+appsettings.Development.json
+.env

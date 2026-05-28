@@ -39,6 +39,7 @@ export function MyCalendarPage() {
   const bookingsByDate = useMemo<Record<string, BookingDto[]>>(() => {
     const all = [
       ...(bookingsData?.incoming ?? []),
+      ...(bookingsData?.myBookings ?? []),
       ...(bookingsData?.ownedConfirmed ?? []),
     ];
     return all.reduce((acc, b) => {

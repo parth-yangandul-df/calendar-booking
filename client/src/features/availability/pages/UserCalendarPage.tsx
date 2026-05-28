@@ -8,9 +8,11 @@ import { DaySidePanel } from '../components/DaySidePanel';
 import { CalendarLegend } from '../components/CalendarLegend';
 import { useMonthNavigation } from '../hooks/useMonthNavigation';
 import { useUserCalendar } from '../hooks/useAvailability';
+import { useBookings } from '@/features/booking/hooks/useBookings';
 import { userApi } from '../api/userApi';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { CalendarDayDto } from '../api/availabilityApi';
+import type { BookingDto } from '@/features/booking/api/bookingApi';
 
 export function UserCalendarPage() {
   const { userId } = useParams<{ userId: string }>();
@@ -27,6 +29,10 @@ export function UserCalendarPage() {
     enabled: !!userId,
   });
 
+  const queryClient = useQueryClient();
+
+  const { data: bookingsData } = useBookings();
+
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const dayData = useMemo<Record<string, CalendarDayDto>>(() => {
@@ -39,6 +45,11 @@ export function UserCalendarPage() {
       {} as Record<string, CalendarDayDto>
     );
   }, [calendarDays]);
+
+  const bookings = useMemo<BookingDto[]>(() => {
+    if (!bookingsData || !userId) return [];
+    return (bookingsData.myBookings ?? []).filter((b) => b.ownerId === userId);
+  }, [bookingsData, userId]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
@@ -89,6 +100,7 @@ export function UserCalendarPage() {
             dayData={dayData}
             readOnly={true}
             onReadOnlyDayClick={setSelectedDate}
+            bookings={bookings}
           />
           <CalendarLegend readOnly={true} />
         </>
@@ -105,6 +117,10 @@ export function UserCalendarPage() {
         mode="booker"
         ownerId={userId}
         ownerEmail={userInfo?.email}
+        onBookingAction={() => {
+          queryClient.invalidateQueries({ queryKey: ['bookings'] });
+          queryClient.invalidateQueries({ queryKey: ['availability', 'calendar', userId, yearMonth] });
+        }}
       />
     </div>
   );

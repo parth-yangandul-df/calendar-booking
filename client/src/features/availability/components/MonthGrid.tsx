@@ -25,6 +25,15 @@ interface MonthGridProps {
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+function toMinutes(time: string): number {
+  const [h, m] = time.split(':').map(Number);
+  return h * 60 + m;
+}
+
+function overlaps(aStart: string, aEnd: string, bStart: string, bEnd: string): boolean {
+  return toMinutes(aStart) < toMinutes(bEnd) && toMinutes(aEnd) > toMinutes(bStart);
+}
+
 export function MonthGrid({
   year,
   month,
@@ -94,8 +103,10 @@ export function MonthGrid({
                 {format(day, 'd')}
               </span>
 
-              {/* Teams-style time range blocks */}
-              {dayInfo?.ranges?.map((range, i) => (
+              {/* Teams-style time range blocks — hide ranges that overlap with bookings */}
+              {dayInfo?.ranges
+                ?.filter(range => !dayBookings.some(b => overlaps(range.start, range.end, b.startTime, b.endTime)))
+                .map((range, i) => (
                 <div
                   key={i}
                   className={cn(
