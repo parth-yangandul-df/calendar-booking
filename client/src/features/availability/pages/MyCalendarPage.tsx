@@ -124,7 +124,7 @@ export function MyCalendarPage() {
             readOnly={false}
             bookings={Object.values(bookingsByDate).flat()}
           />
-          <CalendarLegend readOnly={false} />
+          <CalendarLegend />
         </>
       )}
 

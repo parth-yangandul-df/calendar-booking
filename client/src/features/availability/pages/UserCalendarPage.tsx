@@ -102,7 +102,7 @@ export function UserCalendarPage() {
             onReadOnlyDayClick={setSelectedDate}
             bookings={bookings}
           />
-          <CalendarLegend readOnly={true} />
+          <CalendarLegend />
         </>
       )}
 

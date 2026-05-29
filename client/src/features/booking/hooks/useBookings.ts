@@ -18,6 +18,7 @@ export function useAcceptBooking() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
       queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['availability', 'calendar'], refetchType: 'all' });
       toast.success('Booking confirmed. A meeting link has been attached.');
     },
     onError: () => {
@@ -33,6 +34,7 @@ export function useDeclineBooking() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
       queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['availability', 'calendar'], refetchType: 'all' });
       toast.success('Booking declined.');
     },
     onError: () => {
@@ -48,6 +50,7 @@ export function useCancelBooking() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
       queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['availability', 'calendar'], refetchType: 'all' });
       toast.success('Booking cancelled.');
     },
     onError: (error: AxiosError<{ title?: string }>) => {
@@ -67,6 +70,7 @@ export function useCreateBooking() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bookings'], refetchType: 'all' });
       queryClient.invalidateQueries({ queryKey: ['slots'], refetchType: 'all' });
+      queryClient.invalidateQueries({ queryKey: ['availability', 'calendar'], refetchType: 'all' });
       toast.success('Request sent — awaiting approval.');
     },
     onError: (error: AxiosError<{ title?: string }>) => {

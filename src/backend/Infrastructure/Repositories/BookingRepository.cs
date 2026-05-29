@@ -70,7 +70,7 @@ public class BookingRepository : IBookingRepository
     public async Task<List<Domain.Entities.Booking>> GetOwnedConfirmedBookingsAsync(string ownerId)
     {
         return await _context.Bookings
-            .Where(b => b.OwnerId == ownerId && b.Status == BookingStatus.Confirmed)
+            .Where(b => b.OwnerId == ownerId && (b.Status == BookingStatus.Confirmed || b.Status == BookingStatus.Completed))
             .OrderBy(b => b.Date)
             .ThenBy(b => b.StartTime)
             .ToListAsync();
@@ -115,5 +115,24 @@ public class BookingRepository : IBookingRepository
                         (b.Status == BookingStatus.Pending || b.Status == BookingStatus.Confirmed))
             .OrderBy(b => b.StartTime)
             .ToListAsync();
+    }
+
+    public async Task MarkExpiredBookingsAsync()
+    {
+        var now = DateTime.UtcNow;
+        var today = DateOnly.FromDateTime(now);
+        var currentTime = TimeOnly.FromDateTime(now);
+
+        var expired = await _context.Bookings
+            .Where(b => b.Status == BookingStatus.Confirmed &&
+                        (b.Date < today || (b.Date == today && b.EndTime <= currentTime)))
+            .ToListAsync();
+
+        foreach (var booking in expired)
+        {
+            booking.Status = BookingStatus.Completed;
+        }
+
+        await _context.SaveChangesAsync();
     }
 }

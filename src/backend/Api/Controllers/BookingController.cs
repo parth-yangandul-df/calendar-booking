@@ -83,6 +83,7 @@ public class BookingController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetBookings()
     {
+        await _repo.MarkExpiredBookingsAsync();
         var userId = GetUserId();
 
         var incoming = await _repo.GetIncomingBookingsAsync(userId);

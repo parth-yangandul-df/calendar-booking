@@ -9,7 +9,7 @@ export interface BookingDto {
   date: string;
   startTime: string;
   endTime: string;
-  status: 'Pending' | 'Confirmed' | 'Declined' | 'Cancelled';
+  status: 'Pending' | 'Confirmed' | 'Declined' | 'Cancelled' | 'Completed';
   meetUrl: string | null;
   cancelledAt: string | null;
   createdAt: string;

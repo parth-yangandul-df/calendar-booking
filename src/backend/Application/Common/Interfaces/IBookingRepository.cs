@@ -23,4 +23,7 @@ public interface IBookingRepository
 
     /// <summary>Pending + Confirmed bookings for an owner on a specific date.</summary>
     Task<List<BookingEntity>> GetBookingsForDayAsync(string ownerId, DateOnly date);
+
+    /// <summary>Mark all expired Confirmed bookings (date < today or date == today and endTime <= now) as Completed.</summary>
+    Task MarkExpiredBookingsAsync();
 }

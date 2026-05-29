@@ -7,6 +7,7 @@ using CalendarBooking.Infrastructure.Repositories;
 using CalendarBooking.Infrastructure.Seed;
 using CalendarBooking.Infrastructure.Services;
 using Domain.Entities;
+using DotNetEnv;
 using FluentValidation;
 using Hangfire;
 using Hangfire.Dashboard;
@@ -17,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
+Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Configure Serilog

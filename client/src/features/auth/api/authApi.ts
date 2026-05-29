@@ -13,7 +13,7 @@ export const authApi = {
     apiClient.post<AuthResponse>('/auth/login', data, { _skipRefresh: true } as any),
 
   refresh: () =>
-    apiClient.post<AuthResponse>('/auth/refresh'),
+    apiClient.post<AuthResponse>('/auth/refresh', {}, { _skipRefresh: true } as any),
 
   logout: () =>
     apiClient.post<void>('/auth/logout'),

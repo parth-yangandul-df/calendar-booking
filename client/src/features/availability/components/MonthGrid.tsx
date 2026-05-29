@@ -105,17 +105,13 @@ export function MonthGrid({
 
               {/* Teams-style time range blocks — hide ranges that overlap with bookings */}
               {dayInfo?.ranges
-                ?.filter(range => !dayBookings.some(b => overlaps(range.start, range.end, b.startTime, b.endTime)))
+                ?.filter(range => !dayBookings.some(b => b.status !== 'Cancelled' && b.status !== 'Declined' && b.status !== 'Completed' && overlaps(range.start, range.end, b.startTime, b.endTime)))
                 .map((range, i) => (
                 <div
                   key={i}
                   className={cn(
                     'mt-1 rounded px-1 py-0.5',
-                    dayInfo.isOverride
-                      ? 'bg-orange-100 border border-orange-300 text-orange-800'
-                      : readOnly
-                        ? 'bg-blue-100 border border-blue-300 text-blue-800'
-                        : 'bg-green-100 border border-green-300 text-green-800'
+                    'bg-blue-100 border border-blue-300 text-blue-800'
                   )}
                 >
                   <p className="text-[10px] font-semibold leading-tight truncate">
@@ -150,7 +146,9 @@ export function MonthGrid({
                     ? 'bg-amber-100 border border-amber-300 text-amber-800'
                     : booking.status === 'Confirmed'
                       ? 'bg-emerald-100 border border-emerald-400 text-emerald-800'
-                      : 'bg-zinc-100 border border-zinc-300 text-zinc-500';
+                      : booking.status === 'Completed'
+                        ? 'bg-gray-100 border border-gray-300 text-gray-600'
+                        : 'bg-zinc-100 border border-zinc-300 text-zinc-500';
                 return (
                   <div
                     key={booking.id}

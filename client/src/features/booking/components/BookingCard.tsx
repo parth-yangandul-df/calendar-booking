@@ -16,6 +16,8 @@ function statusBadgeClass(status: BookingDto['status']): string {
       return 'bg-red-100 border border-red-300 text-red-700 py-1 px-2 text-xs font-semibold';
     case 'Cancelled':
       return 'bg-zinc-100 border border-zinc-300 text-zinc-500 py-1 px-2 text-xs font-semibold';
+    case 'Completed':
+      return 'bg-gray-100 border border-gray-300 text-gray-600 py-1 px-2 text-xs font-semibold';
     default:
       return 'py-1 px-2 text-xs font-semibold';
   }

@@ -142,7 +142,9 @@ export function DaySidePanel({
                       ? 'bg-amber-100 border border-amber-300 text-amber-800'
                       : booking.status === 'Confirmed'
                         ? 'bg-emerald-100 border border-emerald-400 text-emerald-800'
-                        : 'bg-zinc-100 border border-zinc-300 text-zinc-500';
+                        : booking.status === 'Completed'
+                          ? 'bg-gray-100 border border-gray-300 text-gray-600'
+                          : 'bg-zinc-100 border border-zinc-300 text-zinc-500';
 
                   return (
                     <div key={booking.id} className={`rounded p-3 ${statusClass}`}>

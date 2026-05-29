@@ -13,6 +13,7 @@ function StatusBadge({ status }: { status: BookingDto['status'] }) {
     Confirmed: 'bg-emerald-100 border border-emerald-400 text-emerald-800 py-1 px-2 text-xs font-semibold',
     Declined: 'bg-red-100 border border-red-300 text-red-700 py-1 px-2 text-xs font-semibold',
     Cancelled: 'bg-zinc-100 border border-zinc-300 text-zinc-500 py-1 px-2 text-xs font-semibold',
+    Completed: 'bg-gray-100 border border-gray-300 text-gray-600 py-1 px-2 text-xs font-semibold',
   };
   return <Badge className={classes[status]}>{status}</Badge>;
 }

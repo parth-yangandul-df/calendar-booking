@@ -15,3 +15,9 @@ client/@/
 appsettings.*.local.json
 appsettings.Development.json
 .env
+
+scripts
+Calendar-Booking-System.pptx
+hld-mermaid.md
+hld-prompt.md
+ppt-prompt.md
